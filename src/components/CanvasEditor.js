@@ -10,35 +10,30 @@ const CanvasEditor = () => {
   const [lastPickedColors, setLastPickedColors] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const canvasRef = useRef(null);
-  const canvas = canvasRef.current;
+  const canvasInstanceRef = useRef(null);
 
   useEffect(() => {
-    setCaptionText(templateData.caption.text);
-    setCtaText(templateData.cta.text);
-    setBackgroundColor("#0369A1");
-    // setSelectedImage(null);
-    // console.log(selectedImage);
-  }, []);
-
-  useEffect(() => {
-    if (canvas) {
-      const canvasInstance = new Canvas(canvas, {
+    if (canvasRef.current) {
+      const canvasInstance = new Canvas(canvasRef.current, {
         backgroundColor,
         selectedImage,
         templateData,
         captionText,
         ctaText,
       });
-      canvasInstance.renderCanvas();
+      canvasInstanceRef.current = canvasInstance;
+
+      if (selectedImage) {
+        const loadImageAndRender = async () => {
+          await canvasInstance.renderCanvas(); // Wait for canvas to render first
+          await canvasInstance.renderSelectedImage(); // Then render the image
+        };
+        loadImageAndRender();
+      } else {
+        canvasInstance.renderCanvas();
+      }
     }
-  }, [
-    canvas,
-    backgroundColor,
-    captionText,
-    ctaText,
-    selectedImage,
-    templateData,
-  ]);
+  }, [backgroundColor, captionText, ctaText, selectedImage]);
 
   const handleCaptionChange = (e) => {
     setCaptionText(e.target.value);
