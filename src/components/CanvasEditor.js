@@ -105,7 +105,7 @@ const CanvasEditor = () => {
               onChange={handleFileInputChange}
             />
             <div className="relative z-0 ml-1 text-blue-500 font-semibold underline">
-              select file
+              {!selectedImage ? "select image" : "select new image"}
             </div>
           </div>
         </div>
