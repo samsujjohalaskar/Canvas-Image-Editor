@@ -13,6 +13,7 @@ const CanvasEditor = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const canvasRef = useRef(null);
   const canvasInstanceRef = useRef(null);
+  const [openEyeDropper, setOpenEyeDropper] = useState(false);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -131,8 +132,13 @@ const CanvasEditor = () => {
           />
         </div>
         <div>
-          <p className="text-xs text-slate-400">Choose your color</p>
+          <div className="flex justify-between">
+            <p className="text-xs text-slate-400">Choose your color</p>
+            <p className="text-xs text-slate-400">or <span  onClick={() => setOpenEyeDropper(true)} className="text-blue-500 font-semibold underline cursor-pointer">Open EyeDropper</span></p>
+          </div>
           <ColorPicker
+            openEyeDropper={openEyeDropper}
+            onEyeDropperClose={() => setOpenEyeDropper(false)}
             color={backgroundColor}
             lastPickedColors={lastPickedColors}
             onChange={handleColorPickerChange}
@@ -140,7 +146,7 @@ const CanvasEditor = () => {
             onBackgroundColorChange={handleBackgroundColorChange}
           />
           <button className="text-sm text-slate-500" onClick={() => handleBackgroundColorChange("#0369A1")}>
-            Reset
+            {lastPickedColors.length != 0 && "Reset"}
           </button>
         </div>
       </div>
