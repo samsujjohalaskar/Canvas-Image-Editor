@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import Canvas from "./Canvas";
 import ColorPicker from "./ColorPicker";
 import templateData from "./templateData.json";
+import "../output.css";
+import { FcAddImage } from "react-icons/fc";
 
 const CanvasEditor = () => {
   const [captionText, setCaptionText] = useState(templateData.caption.text);
@@ -72,7 +74,7 @@ const CanvasEditor = () => {
   };
 
   return (
-    <div>
+    <div className="flex justify-center items-center p-16 shadow-xl mt-10 max-w-max gap-10 bg-slate-50">
       <canvas
         ref={canvasRef}
         width={1080}
@@ -84,38 +86,63 @@ const CanvasEditor = () => {
           transform: "scale(0.9)",
         }}
       ></canvas>
-      <div>
-        <label htmlFor="caption">Caption Text:</label>
-        <input
-          type="text"
-          id="caption"
-          value={captionText}
-          onChange={handleCaptionChange}
-        />
-      </div>
-      <div>
-        <label htmlFor="cta">CTA Text:</label>
-        <input
-          type="text"
-          id="cta"
-          value={ctaText}
-          onChange={handleCtaChange}
-        />
-      </div>
-      <div>
-        <input type="file" accept="image/*" onChange={handleFileInputChange} />
-      </div>
-      <div>
-        <ColorPicker
-          color={backgroundColor}
-          lastPickedColors={lastPickedColors}
-          onChange={handleColorPickerChange}
-          onColorSelect={handleColorSelect}
-          onBackgroundColorChange={handleBackgroundColorChange}
-        />
-        <button onClick={() => handleBackgroundColorChange("#0369A1")}>
-          Reset Background
-        </button>
+      <div className="border-black w-96 p-4">
+        <div className="flex justify-center items-center flex-col mb-9">
+          <p className="font-semibold">Ad Customization</p>
+          <p className="text-sm text-slate-400">
+            Customize your ad and get the templates accordingly
+          </p>
+        </div>
+        <div className="shadow-sm mb-6 rounded-lg p-2 text-sm flex flex-row items-center">
+          <FcAddImage className="text-3xl mr-2" />
+          <label className="text-xs text-slate-400">Change the ad creative image.</label>
+          <div className="relative inline-block">
+            <input
+              className="absolute text-xs left-0 top-0 z-10 opacity-0"
+              type="file"
+              accept="image/*"
+              onChange={handleFileInputChange}
+            />
+            <div className="relative z-0 ml-1 text-blue-500 font-semibold underline">
+              select file
+            </div>
+          </div>
+        </div>
+        <div className="shadow-sm mb-6 rounded-lg p-2 text-sm flex flex-col">
+          <label className="text-xs text-slate-400" htmlFor="caption">Ad Content</label>
+          <input
+            className="bg-slate-50"
+            type="text"
+            id="caption"
+            value={captionText}
+            onChange={handleCaptionChange}
+            style={{outline: "none"}}
+          />
+        </div>
+        <div className="shadow-sm mb-6 rounded-lg p-2 text-sm flex flex-col">
+          <label className="text-xs text-slate-400" htmlFor="cta">CTA</label>
+          <input
+            className="bg-slate-50"
+            type="text"
+            id="cta"
+            value={ctaText}
+            onChange={handleCtaChange}
+            style={{outline: "none"}}
+          />
+        </div>
+        <div>
+          <p className="text-xs text-slate-400">Choose your color</p>
+          <ColorPicker
+            color={backgroundColor}
+            lastPickedColors={lastPickedColors}
+            onChange={handleColorPickerChange}
+            onColorSelect={handleColorSelect}
+            onBackgroundColorChange={handleBackgroundColorChange}
+          />
+          <button className="text-sm text-slate-500" onClick={() => handleBackgroundColorChange("#0369A1")}>
+            Reset
+          </button>
+        </div>
       </div>
     </div>
   );

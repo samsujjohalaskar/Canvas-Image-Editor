@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ChromePicker } from "react-color";
+import "../output.css";
+import { FaPlus } from "react-icons/fa";
 
 const ColorPicker = ({
   color,
@@ -9,6 +11,26 @@ const ColorPicker = ({
   onBackgroundColorChange,
 }) => {
   const [showColorPicker, setShowColorPicker] = useState(false);
+  const colorPickerRef = useRef(null);
+
+  useEffect(() => {
+    // Add event listener to detect clicks on document
+    const handleClickOutside = (event) => {
+      if (colorPickerRef.current && !colorPickerRef.current.contains(event.target)) {
+        setShowColorPicker(false);
+      }
+    };
+
+    if (showColorPicker) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showColorPicker]);
 
   const handleColorPickerToggle = () => {
     setShowColorPicker(!showColorPicker);
@@ -22,35 +44,30 @@ const ColorPicker = ({
   };
 
   return (
-    <div>
+    <div ref={colorPickerRef}>
       <div>
         {showColorPicker && (
           <ChromePicker
-            className="absolute"
             color={color}
-            onChangeComplete={handleChangeComplete} // using onChangeComplete event
+            onChangeComplete={handleChangeComplete}
           />
         )}
       </div>
-      <div>
+      <div className="mt-2 flex items-center">
         {lastPickedColors
           .slice(-5)
           .reverse()
           .map((pickedColor, index) => (
             <div
               key={index}
+              className={`w-5 h-5 cursor-pointer inline-block mr-1.5 ${pickedColor === color ? "border-2 border-blue-500" : "border-0"}`}
               style={{
                 backgroundColor: pickedColor,
-                width: "20px",
-                height: "20px",
-                display: "inline-block",
-                marginRight: "5px",
-                cursor: "pointer",
               }}
               onClick={() => onColorSelect(pickedColor)}
             ></div>
           ))}
-        <button onClick={handleColorPickerToggle}>+</button>
+        <button className="h-5 w-5 flex justify-center items-center text-black bg-gray-300 text-xs" onClick={handleColorPickerToggle}><FaPlus /></button>
       </div>
     </div>
   );

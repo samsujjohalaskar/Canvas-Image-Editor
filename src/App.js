@@ -3,7 +3,7 @@ import CanvasEditor from './components/CanvasEditor';
 
 function App() {
   return (
-    <div className="App">
+    <div className='flex justify-center '>
      <CanvasEditor/>
     </div>
   );
