@@ -62,6 +62,7 @@ const ColorPicker = ({
         .then((result) => {
           const color = result.sRGBHex;
           onColorSelect(color);
+          onChange(color);
         })
         .catch((e) => {
           console.error("error:" + e);
