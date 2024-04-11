@@ -52,7 +52,7 @@ const ColorPicker = ({
     if (openEyeDropper) {
       if (!window.EyeDropper) {
         onEyeDropperClose(); //callback function to set openEyeDropper false
-        console.log("This browser does not support the EyeDropper API yet!");
+        alert("This browser does not support the EyeDropper API yet!");
         return; // exits early if EyeDropper API is not supported
       }
 
